@@ -1,0 +1,4 @@
+data_*
+*.out
+*.o
+*.dat

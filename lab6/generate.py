@@ -3,8 +3,9 @@ import string
 import csv
 from random import randint
 
-def generate_nos(num_testcases, size):
-	ret_list = [int(''.join(["%s" % randint(0, 9) for _ in range(0, size)])) for _ in range(num_testcases)]
+def generate_nos(num_testcases, size1, size2):
+#	ret_list = [int(''.join(["%s" % randint(0, 9) for _ in range(0, size)])) for _ in range(num_testcases)]
+	ret_list = [float(''.join(["%s" % randint(0, 9), "." , "%s" % randint(0, 9), "%s" % randint(0, 9)])) for _ in range(num_testcases)]
 	return ret_list
 
 def generate_strings(num_testcases, size, flag):
@@ -31,17 +32,13 @@ def write_to_file(filename, final_list):
 			writer.writerow([val])
 
 def main(num_testcases):
-	cr_card_nos = generate_nos(num_testcases, 16)
-	bank_codes = generate_strings(num_testcases, 5, True)
-	dates = generate_dates(num_testcases)
-	first_names = generate_strings(num_testcases, 5, False)
-	last_names = generate_strings(num_testcases, 5, False)
-	final_list = [str(card_no) + "," + bank_code + "," + date + "," + first_name + "," + last_name for card_no, bank_code, date, first_name, last_name in zip(cr_card_nos, bank_codes, dates, first_names, last_names)]
-	print(final_list)
+	first_name = generate_strings(num_testcases, 10, False)
+	cgpa = generate_nos(num_testcases, 2, 2)
+	final_list = [first_name + "," + str(cgpa) for first_name, cgpa in zip(first_name,cgpa)]
+	# print(final_list)
 	filename = str(num_testcases)
 	write_to_file(filename, final_list)
 
 if __name__ == '__main__':
-	number_of_testcases = [10 ** i for i in range(1, 8)]
-	for num_testcases in number_of_testcases:
-		main(num_testcases)
+	num_testcases = 10240
+	main(num_testcases)
