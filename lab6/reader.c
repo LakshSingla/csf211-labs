@@ -16,7 +16,7 @@ student_record *read_csv(const char * fname, int *length) {
 	student_record rec;
 	student_record * arr = malloc(sizeof(student_record) * size);
 	//scanf()
-	while(fscanf(fp, "%[^,],%f", rec.name, &(rec.cg)) != EOF) {
+	while(fscanf(fp, "%[^,],%f\n", rec.name, &(rec.cg)) != EOF) {
 		++len;
 		if(len > size) {
 			size *= 2;

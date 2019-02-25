@@ -4,3 +4,4 @@ data_*
 *.dat
 .*swp
 *.fuse*
+*temp*

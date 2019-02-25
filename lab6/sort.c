@@ -94,7 +94,6 @@ void merge_sort_iterative(student_record *ls, int sz) {
 			int len2 = (block_size < sz-y ? block_size : sz-y);
 			student_record *ls_temp = malloc(sizeof(student_record) * (block_size * 2));
 			if(y < sz)  {
-				printf("%d - %d\n", x, x+len1+len2);
 				merge(ls+x, len1, ls+y, len2, ls_temp);
 				for(int j = 0; j < len1+len2; ++j) {
 					ls[j+x] = ls_temp[j];
