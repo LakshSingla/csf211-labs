@@ -16,4 +16,9 @@ typedef struct {
 	node *tail;
 } queue;
 
+typedef struct {
+	queue *q;
+	int num;
+} multi_queue;
+
 #endif

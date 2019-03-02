@@ -65,11 +65,5 @@ void insertionsort(employee *arr, int len) {
 
 void insightsort(employee *arr, int len, int S) {
 	quicksort_iter_internal(arr, 0, len-1, S);
-	
-	 printf("\n");
-  
-  for(int i = 0; i < len; ++i)
-  	printf("%s %lu\n", arr[i].name, arr[i].id);
-
 	insertionsort(arr, len);
 }

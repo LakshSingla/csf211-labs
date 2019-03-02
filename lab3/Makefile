@@ -1,4 +1,4 @@
-SRC = main.c queue.c
+SRC = main.c queue.c multi_queue.c reader.c
 OBJ = $(SRC:.c=.o)
 EXE = a.out
 
@@ -10,3 +10,6 @@ queue: $(OBJ)
 
 %.o: %.c
 	gcc -c $(FLAGS) $*.c
+
+clean: 
+	rm -rf $(OBJ) $(EXE)
