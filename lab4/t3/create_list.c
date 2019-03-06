@@ -37,7 +37,7 @@ node *create_cycle(node *list) {
 		printf("EMPTY LIST\n");
 		return list;	
 	}
-	printf("CYCLE\n");
+	printf("CYCLE");
 
 	int n = 1;
 
@@ -49,6 +49,7 @@ node *create_cycle(node *list) {
 	}
 
 	int cycle_head = rand() % n;
+	printf(", Head = %d\n", cycle_head);
 	node* cycle_head_ptr = list;
 
 	while(cycle_head--) 

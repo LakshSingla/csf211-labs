@@ -43,6 +43,10 @@ void insertInOrder(List list, Node newNode);
 
 List insertionSort(List list);
 
+Node mergeSort(Node list);
+Node mergeSortedList(Node a, Node b);
+void splitHalf(Node head, Node *a, Node *b);
+
 double measureSortingTime(List list);
 
 void * myalloc(int size);

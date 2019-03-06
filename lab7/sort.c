@@ -1,10 +1,17 @@
 #include "sort.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include "structures.h"
 #include "utils.h"
+
+int reference;
+
+int *base = NULL, *max;
+long long int size =  -1;
+
 
 // Partition between indices start and end both inclusive
 // Returns the index where last elem has been inserted
@@ -23,16 +30,68 @@ int partition(employee *arr, int start, int end) {
 	return x+1;
 }
 
-void quicksort(employee *arr, int len) {
-	//quicksort_rec_internal(arr, 0, len-1, 1);
-	quicksort_iter_internal(arr, 0, len-1, 1);
+/*int partition_hoare(employee *arr, int start, int end) {
+	if(start == end) return start;
+	unsigned long int el_id = arr[end].id;
+	int i = start-1, j = end;
+	while(true) {
+		do {
+			++i;
+		} while(arr[i].id < el_id);
+		do {
+			--j;
+		} while(arr[j].id > el_id);
+		if(i > j || i > end || j < start) {
+			if(i > end) return end;
+			else if (j < start) return start;
+			swap(arr+i, arr+end);	
+			return i;
+		}
+		else {
+			swap(arr + i, arr + j);
+		}
+	}
+	swap(arr + end, arr + i);
+	return i;
+}*/
+
+
+int partition_hoare(employee *arr, int start, int end) {
+	unsigned long int el_id = arr[end].id;
+	int i = start-1;
+	int j = end+1;
+	while(true) {
+		do {
+			i++;
+		} while(arr[i].id < el_id);
+		do {
+			j--;
+		} while(arr[j].id > el_id);
+		
+		if (i >= j) return j;
+		swap(arr + i, arr + j);
+	}
 }
 
-// Sorts between start to end, both inclusive
-void quicksort_rec_internal(employee *arr, int start, int end, int S) { 
-	if(end - start + 1 <= S) return;		//Base case
+void quicksort(employee *arr, int len) {
+	quicksort_rec_internal(arr, 0, len-1, 1);
+}
+void quicksort_rec_internal(employee *arr, int start, int end, int S) {
+	int x; 
+	if(base < &x) base = &x;
+	long long int stack_size = llabs(&x - base) * sizeof(int);
+	if(stack_size > size) size = stack_size;
+
+	printf("SIZE: %lld\n", size);
+
 	
-	int part = partition(arr, start, end);
+	if(end - start + 1 <= S) return;		//Base case
+	//for(int i = 0; i < 10; ++i)
+  	//printf("%lu\t", arr[i].id);
+	int part = partition_hoare(arr, start, end);
+	
+  //printf("\n");
+	printf("%d\n", part);
 	quicksort_rec_internal(arr, start, part-1, S);
 	quicksort_rec_internal(arr, part+1, end, S);
 	

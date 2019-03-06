@@ -22,3 +22,5 @@ KeyStruct extractKeys(int* Ls, int lsSize, int loKey, int hiKey);
 int part2Loc(int* Ls, int lo, int hi, int piv);
 
 void quickSortKnownKeyRange(int * Ls, int size, int loKey, int hiKey);
+
+int getGlobalSize();

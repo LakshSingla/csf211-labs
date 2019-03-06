@@ -4,6 +4,7 @@
 #include <sys/time.h>
 
 extern int globalCounter;
+void printList(List list);
 
 Node createNode(Student record) {
 	Node n = (Node)myalloc(sizeof(struct node));
@@ -113,6 +114,74 @@ List insertionSort(List list) {
 		myfree(prev);
 	}
 	
+	return sortedList;
+}
+
+Node mergeSort(Node list) {
+	Node a, b;
+	
+	if(list == NULL || list->next == NULL) return list;
+	splitHalf(list, &a, &b);
+	struct list x = {
+		.first = a
+	};
+
+	printf("BREAK####################\n");
+	printf("*\n");
+	printList(&x);
+	x.first = b;
+	printf("*\n");
+	printList(&x);
+	Node l1 = mergeSort(a);
+	Node l2 = mergeSort(b);
+	printf("MERGE####################\n");
+	x.first = l1;
+	printList(&x);
+	printf("*\n");
+	x.first = l2;
+	printList(&x);
+	Node sortedList = mergeSortedList(l1, l2);
+	printf("*\n");
+	x.first = sortedList;
+	printList(&x);
+	return sortedList;
+	return NULL;
+}
+
+void splitHalf(Node head, Node *a, Node *b) {
+	if(head == NULL) {
+		*a = NULL; *b = NULL;
+		return;
+	}
+	
+	Node slow, fast;
+	slow = fast = head;
+	fast = fast->next;
+	while(fast) {
+		fast = fast->next;
+		if(fast) {
+			fast = fast->next;
+			slow = slow->next;
+		}
+	}
+	*a = head;
+	*b = slow->next;
+	slow->next = NULL;
+}
+
+Node mergeSortedList(Node a, Node b) {
+	Node sortedList = NULL;
+	if(a == NULL) return b;
+	if(b == NULL) return a;
+	
+	if(a->record->marks <= b->record->marks) {
+		sortedList = a;
+		sortedList->next = mergeSortedList(a->next, b);
+	}
+	else {
+		sortedList = b;
+		sortedList->next = mergeSortedList(a, b->next);
+	}
 	return sortedList;
 }
 

@@ -21,7 +21,15 @@ void cycle1(node *list) {
 		hare = hare->next->next;
 		tort = tort->next;
 		if(hare == tort) {
-			printf("CYCLE\n");
+			printf("CYCLE");
+			tort = list;
+			int i = 0;
+			while(tort != hare) {
+				hare = hare->next;	
+				tort = tort->next;	
+				++i;
+			}
+			printf(", Head at: %d", i);
 			break;
 		}
 	}

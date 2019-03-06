@@ -81,7 +81,7 @@ int main()
 	globalCounter = 0;
 
 	// Randomly generates student records=arraySize
-	int arraySize = 100000;
+	int arraySize = 10;
 	Student studArray = generateData(arraySize);
 
 	// measuring heap memory
@@ -91,28 +91,31 @@ int main()
 	List list1 = createList(studArray, arraySize);
 
 	// printing the list
-	printList(list1);
+	//printList(list1);
 
 	// measuring heap memory
-	printf("Heap size is %d bytes\n", globalCounter);
+	//printf("Heap size is %d bytes\n", globalCounter);
 	
 	//List test = (List)myalloc(sizeof(struct list));
 	//test->count = 0;
 	//test->first = test->last = NULL;
 	//insertInOrder(test, );
 	//insertion sort.
-	list1 = insertionSort(list1);
+	Node x = mergeSort(list1->first);
+	struct list xx = {
+		.first = x
+	};
 	
 	printf("Printing Sorted Array:\n");
-	printList(list1);
+	printList(&xx);
 	
 	// measuring heap memory
 	printf("Heap size is %d bytes\n", globalCounter);
 
-	double proftime = measureSortingTime(list1);
+	//double proftime = measureSortingTime(list1);
 	
 	// profiling the time
-	printf("The profiling time is : %lf\n", proftime);
+	//printf("The profiling time is : %lf\n", proftime);
 
 	// measuring heap memory
 	printf("Heap size is %d bytes\n", globalCounter);
