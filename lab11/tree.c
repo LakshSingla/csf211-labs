@@ -1,16 +1,16 @@
 #include "tree.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "structures.h"
 
-node create_new_tree() {
-	node x = {
-		.key = NULL,
-		.first_child = NULL
-		.right_sibling = NULL,
-	};
+node *create_new_tree() {
+	node *x = (node*)malloc(sizeof(node));
+	x->key = NULL;
+	x->first_child = NULL;
+	x->right_sibling = NULL;
 	return x;
 }
 
@@ -39,11 +39,11 @@ node* add_data(node *tree, char *data) {
 			//Add to the xth level of the tree
 		}
 	}*/
-
+	char delim[2] = ".";
 	char *tokens[MAX_DELIMS] = {NULL};
 	char *indiv_str;
 	int x = 0;
-	indiv_str = strtok(data);
+	indiv_str = strtok(data, delim);
 	do {
 		if(indiv_str != NULL) {		//For the first string
 			char *duplicate_str = strdup(indiv_str);
@@ -54,35 +54,57 @@ node* add_data(node *tree, char *data) {
 			}
 			tokens[x++] = duplicate_str;
 		}	
-	} while((indiv_str = strtok(NULL, '.')) != NULL);
+	} while((indiv_str = strtok(NULL, ".")) != NULL);
 
+	
+	node *prev = tree;
+	node *head = tree;
 	for(int i = MAX_DELIMS - 1; i >= 0; --i) {
 		if(!tokens[i]) continue;
-		
-		char *prev = tree;
-		char *head = tree;
 
-		head = head->first_child;	
-		while(head != NULL && strcmp(head) != 0) 
-			head = head->right_sibling
+		node *prev_sibling = NULL;
+		head = head->first_child;
+
+		while(head != NULL && strcmp(head->key, tokens[i]) != 0) {
+			prev_sibling = head;
+			head = head->right_sibling;
+		}
 
 		// Create space for the new node
+		node *new_node;
+		//printf("%p\n", head);
 		if(head == NULL) {
-			node *new_node = (node *)malloc(sizeof(node));	
+			new_node = (node*)malloc(sizeof(node));	
 			new_node->first_child = NULL;
 			new_node->right_sibling = NULL;
 			new_node->key = tokens[i];
+			//printf("here\n");
 		}
-
+		else {
+			new_node = head;	
+		}
 		// Insert inside this only
+		if(prev->first_child == NULL) prev->first_child = new_node;
+		if(prev_sibling && prev_sibling->right_sibling == NULL) prev_sibling->right_sibling = new_node;
+		head = new_node;
+		prev = head;
 	}
+	return tree;
 }
 
-
-node *add_to_level(node *tree, int level, char *data) {
+/*node *add_to_level(node *tree, int level, char *data) {
 	node *first_child_of_level = tree;
 	for (int i = 0; i < level; ++i) {
 		first_child_of_level = first_child_of_level->first_child;
 	}
+}*/
 
+void print_data(const node *tree, int level) {
+	while(tree) {
+		if(tree->key) {
+			printf("%d %s\n", level, tree->key);
+		}
+		print_data(tree->first_child, level+1);
+		tree = tree->right_sibling;
+	}	
 }
