@@ -14,36 +14,15 @@ node *create_new_tree() {
 	return x;
 }
 
-node* add_data(node *tree, char *data) {
-	/*char *new_data = (char *)malloc(strlen(data) + 1);
-	node *new_node = (node *)malloc(sizeof(node) + 1);
-	strcpy(new_data, data);
-	new_node.key = new_data;*/
-
-	/*Initialize delimiters*/
-	//Assuming maximum number of '.' can be MAX_DELIMS, 1 more for storing string length
-	
-
-	/*int delims[MAX_DELIMS + 1]; 	
-	for(int i = 0; i < 20; ++i) delims[i] = -1;
-	int x = 0;
-	for(int i = 0; i < strlen(data); ++i)
-			if(data[i] = '.') 
-				delims[x++] = i
-	delims[x] = strlen(data);
-	
-	for(int i = 19; i >= 0; --i) {
-		if(delims[i] == -1) continue;
-		else {
-			//Extract the part of the string between i and i-1	
-			//Add to the xth level of the tree
-		}
-	}*/
+//It is assumed that add_hostname has full control of the 
+//hostname and ip memory and is to be released by the caller
+//function
+node* add_hostname(node *tree, char *hostname, char *ip) {
 	char delim[2] = ".";
 	char *tokens[MAX_DELIMS] = {NULL};
 	char *indiv_str;
 	int x = 0;
-	indiv_str = strtok(data, delim);
+	indiv_str = strtok(hostname, delim);
 	do {
 		if(indiv_str != NULL) {		//For the first string
 			char *duplicate_str = strdup(indiv_str);
@@ -56,7 +35,6 @@ node* add_data(node *tree, char *data) {
 		}	
 	} while((indiv_str = strtok(NULL, ".")) != NULL);
 
-	
 	node *prev = tree;
 	node *head = tree;
 	for(int i = MAX_DELIMS - 1; i >= 0; --i) {
@@ -72,13 +50,11 @@ node* add_data(node *tree, char *data) {
 
 		// Create space for the new node
 		node *new_node;
-		//printf("%p\n", head);
 		if(head == NULL) {
 			new_node = (node*)malloc(sizeof(node));	
 			new_node->first_child = NULL;
 			new_node->right_sibling = NULL;
 			new_node->key = tokens[i];
-			//printf("here\n");
 		}
 		else {
 			new_node = head;	
