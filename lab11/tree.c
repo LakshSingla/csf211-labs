@@ -3,12 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "structures.h"
 
 node *create_new_tree() {
 	node *x = (node*)malloc(sizeof(node));
 	x->key = NULL;
+	x->ip = NULL;
 	x->first_child = NULL;
 	x->right_sibling = NULL;
 	return x;
@@ -55,6 +57,7 @@ node* add_hostname(node *tree, char *hostname, char *ip) {
 			new_node->first_child = NULL;
 			new_node->right_sibling = NULL;
 			new_node->key = tokens[i];
+			new_node->ip = NULL;
 		}
 		else {
 			new_node = head;	
@@ -65,20 +68,40 @@ node* add_hostname(node *tree, char *hostname, char *ip) {
 		head = new_node;
 		prev = head;
 	}
+	head->ip = ip;
 	return tree;
 }
 
-/*node *add_to_level(node *tree, int level, char *data) {
-	node *first_child_of_level = tree;
-	for (int i = 0; i < level; ++i) {
-		first_child_of_level = first_child_of_level->first_child;
+bool find_hostname(node *tree, char *hostname) {
+	char *tokens[MAX_DELIMS] = {NULL};
+	char delim[] = ".";
+	char *hostname_copyable = strdup(hostname);
+	char *token = strtok(hostname_copyable, delim);
+	int i = 0;
+	node *final_node;
+	while(token != NULL) {
+		tokens[i++] = strdup(token);
+		token = strtok(NULL, delim);
 	}
-}*/
+	i = MAX_DELIMS;
+	while(!tokens[--i]);
+	while(tree && i >= 0) {
+		tree = tree->first_child;
+		printf("%s, ", tokens[i]);
+		while(tree && strcmp(tokens[i], tree->key) != 0)	tree = tree->right_sibling;
+		--i;
+	}
+	if(tree)
+		printf("%s\n", tree->ip);
+	else 
+		printf("Match not found\n");
+	return true;
+}
 
 void print_data(const node *tree, int level) {
 	while(tree) {
 		if(tree->key) {
-			printf("%d %s\n", level, tree->key);
+			printf("%d %s %s\n", level, tree->key, tree->ip);
 		}
 		print_data(tree->first_child, level+1);
 		tree = tree->right_sibling;

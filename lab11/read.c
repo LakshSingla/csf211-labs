@@ -1,16 +1,40 @@
 #include "read.h"
 
-#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
+#include "structures.h"
 #include "tree.h"
 
-node *read_file(const char *filename) {
-	FILE *fp = fopen(filename, "r");	
-	if(fp == NULL) {
-		printf("Unable to open %s for reading. Exiting...\n");	
-		exit(0);
-	}
+void prompt() {
 	int choice;
-	int fileend;
-	//while((fileend=fscanf(fp, "%d")))
+	node *tree = create_new_tree();
+	do {
+		printf("Enter a choice (1, 2, -1): ");
+		scanf("%d", &choice);
+		switch(choice) {
+			case 1: {
+				int number;
+				char hostname[200];
+				char ip[30];
+				scanf("%d", &number);
+				while(number--) {
+					scanf(" %s %s", hostname, ip);	
+					add_hostname(tree, strdup(hostname), strdup(ip));
+				}
+				break;
+			}
+			case 2: {
+				break;	
+			}
+			case -1: {
+				break;				
+			}
+
+			default:
+				printf("Please enter a valid input\n");
+				break;
+		}
+	} while(choice != -1);
+	print_data(tree, 0);
 }

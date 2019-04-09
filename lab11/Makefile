@@ -11,3 +11,6 @@ main: $(OBJ)
 
 %.o: %.c
 	$(CC) $(FLAGS) -c $*.c
+
+clean:
+	rm -rf $(OBJ) $(EXE)
