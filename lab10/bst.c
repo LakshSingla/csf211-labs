@@ -13,27 +13,43 @@ node* create_node() {
 	return new_node;
 }
 
-/*node* create_new_tree(int value) {
-	node *new_node = create_node();
-	new_node->value = value;
-	new_node->left = NULL;
-	new_node->right = NULL; new_node->hb = 0;
-	return new_node;
-}*/
-
 node *add_value(node* tree, int value) {
 	node *new_node = create_node();	
 	new_node->value = value;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->hb = 0;ew_node.
+	new_node->hb = 0;
+
 	//In case, no tree is present, create a new tree and return it;
 	if(tree == NULL) return new_node;
 
-	node *prev = tree;
+	node *cur = tree;
 	while(true){
-		
+		if(cur->value > value) {
+			if(cur->left == NULL) {
+				cur->left = new_node;
+				break;
+			}	
+			cur = cur->left;
+			continue;
+		}
+		else {
+			if(cur->right == NULL) {
+				cur->right = new_node;	
+				break;
+			}
+			cur = cur->right;
+			continue;
+		}
 	}
+	return tree;
+}
+
+node* find_value(node *tree, int value) {
+	//Shortcircuiting will ensure that we donot access invalid memory location
+	if(tree == NULL || tree->value == value) return tree;
+	else if(tree->value > value) return find_value(tree->left, value);
+	return find_value(tree->right, value);
 }
 
 void inorder_traversal(node *tree) {
