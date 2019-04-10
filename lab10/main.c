@@ -3,6 +3,8 @@
 
 #include "structures.h"
 #include "bst.h"
+#include "stats.h"
+
 
 int main() {
 	node *tree = add_value(NULL, 2);
@@ -49,7 +51,7 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	node *x = find_value(tree, 21);
+	/*node *x = find_value(tree, 21);
 	node *y = find_value(tree, 22);
 	node *z = find_value(tree, 2);
 	node *w = find_value(tree, 16);
@@ -78,6 +80,22 @@ int main() {
 
 
 	inorder_traversal(tree);
+	printf("\n");*/
+
+
+	/*printf("%d - %d\n", 2, find_kth_value(tree, 2));
+	printf("%d - %d\n", 3, find_kth_value(tree, 3));
+	printf("%d - %d\n", 1, find_kth_value(tree, 1));
+	printf("%d - %d\n", 7, find_kth_value(tree, 7));
+	printf("%d - %d\n", 6, find_kth_value(tree, 6));*/
+
+	find_in_range(tree, -1, 100);
+	printf("\n");
+	find_in_range(tree, 4, 7);
+	printf("\n");
+	find_in_range(tree, 1, 15);
+	printf("\n");
+	find_in_range(tree, 2, 3);
 	printf("\n");
 
 	//node *u = find_parent(tree, z);
