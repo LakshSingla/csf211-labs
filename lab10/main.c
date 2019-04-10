@@ -19,13 +19,24 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	/*node *x = find_value(tree, 21);
+	node *x = find_value(tree, 21);
 	node *y = find_value(tree, 22);
 	node *z = find_value(tree, 2);
-	node *w = find_parent(tree, y);
-	node *u = find_parent(tree, z);
+	node *w = find_value(tree, 16);
+	
+	tree = delete_value(tree, x);
+	tree = delete_value(tree, y);
+	tree = delete_value(tree, z);
+	tree = delete_value(tree, w);
+	z = find_value(tree, 2);
+	tree = delete_value(tree, z);
 
-	if(x->right == y) printf("a");
+	inorder_traversal(tree);
+	printf("\n");
+
+	//node *u = find_parent(tree, z);
+
+	/*if(x->right == y) printf("a");
 	if(z == NULL) printf("a");
 	if(w == x) printf("c");
 	if(u == NULL) printf("c");*/
