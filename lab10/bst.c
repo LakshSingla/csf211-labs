@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 node* create_node() {
 	node *new_node = (node*)malloc(sizeof(node));
@@ -41,6 +42,36 @@ node *add_value(node* tree, int value) {
 			cur = cur->right;
 			continue;
 		}
+	}
+
+	//Calculate generic height balance information
+	node *current_node = new_node;
+	node *parent_node = find_parent(tree, new_node);
+	bool prev_changed = true;
+	while(parent_node != NULL) {
+		if(prev_changed) {
+			prev_changed = false;
+			if(parent_node->left == current_node) {
+			int current_hb = parent_node->hb;
+			--current_hb;
+			if(abs(parent_node->hb) < abs(current_hb)) {
+				prev_changed = true;
+				parent_node->hb = current_hb;
+			}
+		}
+		else {
+			int current_hb = parent_node->hb;
+			++current_hb;
+			if(abs(parent_node->hb) < abs(current_hb)) {
+				prev_changed = true;
+				parent_node->hb = current_hb;
+			}
+		}
+		
+		}
+		
+		current_node = parent_node;
+		parent_node = find_parent(tree, parent_node);
 	}
 	return tree;
 }
@@ -103,7 +134,7 @@ node* find_value(node *tree, int value) {
 void inorder_traversal(node *tree) {
 	if(tree == NULL) return;
 	inorder_traversal(tree->left);
-	printf("%d ", tree->value);
+	printf("%d(%d) ", tree->value, tree->hb);
 	inorder_traversal(tree->right);
 }
 

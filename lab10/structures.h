@@ -5,7 +5,7 @@ typedef struct _node {
 	int value;
 	struct _node *left;
 	struct _node *right;
-	int hb: 2;
+	int hb;
 } node;
 
 #endif
