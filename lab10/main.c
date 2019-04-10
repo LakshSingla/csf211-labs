@@ -49,20 +49,36 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	/*node *x = find_value(tree, 21);
+	node *x = find_value(tree, 21);
 	node *y = find_value(tree, 22);
 	node *z = find_value(tree, 2);
 	node *w = find_value(tree, 16);
 	
 	tree = delete_value(tree, x);
+	inorder_traversal(tree);
+	printf("\n");
+
 	tree = delete_value(tree, y);
+	inorder_traversal(tree);
+	printf("\n");
+
 	tree = delete_value(tree, z);
+	inorder_traversal(tree);
+	printf("\n");
+
 	tree = delete_value(tree, w);
+	inorder_traversal(tree);
+	printf("\n");
+
 	z = find_value(tree, 2);
+	
 	tree = delete_value(tree, z);
+	inorder_traversal(tree);
+	printf("\n");
+
 
 	inorder_traversal(tree);
-	printf("\n");*/
+	printf("\n");
 
 	//node *u = find_parent(tree, z);
 

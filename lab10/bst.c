@@ -48,10 +48,9 @@ node *add_value(node* tree, int value) {
 	node *current_node = new_node;
 	node *parent_node = find_parent(tree, new_node);
 	bool prev_changed = true;
-	while(parent_node != NULL) {
-		if(prev_changed) {
-			prev_changed = false;
-			if(parent_node->left == current_node) {
+	while(parent_node != NULL && prev_changed) {
+		prev_changed = false;
+		if(parent_node->left == current_node) {
 			int current_hb = parent_node->hb;
 			--current_hb;
 			if(abs(parent_node->hb) < abs(current_hb)) {
@@ -67,9 +66,6 @@ node *add_value(node* tree, int value) {
 				parent_node->hb = current_hb;
 			}
 		}
-		
-		}
-		
 		current_node = parent_node;
 		parent_node = find_parent(tree, parent_node);
 	}
@@ -77,19 +73,44 @@ node *add_value(node* tree, int value) {
 }
 
 node *delete_value(node *tree, node *to_delete) {
+	printf("%d\t", to_delete->value);
 
 	node *parent = find_parent(tree, to_delete);
 	
 	//No children of the node
 	if(to_delete->left == NULL && to_delete->right == NULL) {
+		bool was_left;
 		if(parent == NULL) {
 			free(to_delete);	
 			return NULL;
 		}
 
-		if(parent->right == to_delete) parent->right = NULL;
-		else parent->left = NULL;
+		if(parent->right == to_delete) {
+			parent->right = NULL;
+			was_left = false;
+		}
+		else {
+			parent->left = NULL;
+			was_left = true;
+		}
 		free(to_delete);
+
+		//Height balance information change
+		bool prev_changed = true;
+		while(prev_changed && parent != NULL) {
+			prev_changed = false;
+			if(was_left && parent->hb < 0) {
+				parent->hb++;
+				prev_changed = true;
+			}	 
+			else if(!was_left && parent->hb > 0) {
+				parent->hb--;		
+				prev_changed = true;
+			}
+			node *temp = parent;
+			parent = find_parent(tree, parent);
+			parent && (was_left = (parent->left == temp));
+		}
 		return tree;
 	}
 
