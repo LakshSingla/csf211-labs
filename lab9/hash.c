@@ -65,17 +65,47 @@ hash_table* insert_in_hash_table(hash_table *x, char *word, int index, int base_
 	new_entry->freq = 1;
 	new_entry->next = NULL;
 	x->element_count++;
+	if(trailing == NULL) {
+		x->ht[computed_hash] = new_entry;
+		return x;
+	}
 	trailing->next = new_entry;
 	return x;
 }
 
+hash_table * insert_all_in_hash_table(hash_table *x, char **arr, int arr_length, int base_number, int table_size) {
+	for(int i = 0; i < arr_length; ++i)
+		insert_in_hash_table(x, arr[i], i, base_number, table_size);
+
+	return x;
+}
+
 void print_frequency(hash_table *x, int table_size) {
+	printf("%s\t\t%s\t\t\t%s\t\t%s\n", "HASH", "WORD", "INDEX", "FREQ");	
 	for(int i = 0; i < table_size; ++i) {
 		node *chain = x->ht[i];
-		printf("%s\t\t%s\t\t%s\n", "WORD", "INDEX", "FREQ");	
 		while(chain) {
-			printf("%s\t\t%d\t\t%d\n", chain->word, chain->index, chain->freq);	
+			printf("%d\t\t%s\t\t\t%d\t\t%d\n", i, chain->word, chain->index, chain->freq);	
 			chain = chain->next;
 		}
 	}
+}
+
+node *lookup(hash_table *x, char *word, int base_number, int table_size) {
+	int computed_hash = hash(word, base_number, table_size);
+	node *chain = x->ht[computed_hash];
+	while(chain && strcmp(chain->word, word)) {
+		x->querying_cost++;
+		chain = chain->next;
+	}
+	if(chain)
+		printf("word: %s, hash: %d, index: %d, freq: %d\n", chain->word, computed_hash, chain->index, chain->freq);	
+	else
+		printf("%s not found in the hash table\n", word);
+	return chain;
+}
+
+void lookup_all(hash_table *x, char **arr, int arr_length, int base_number, int table_size) {
+		for(int i = 0; i < arr_length; ++i)
+			lookup(x, arr[i], base_number, table_size);
 }
