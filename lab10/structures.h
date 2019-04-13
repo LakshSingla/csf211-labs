@@ -6,6 +6,7 @@ typedef struct _node {
 	struct _node *left;
 	struct _node *right;
 	int hb;
+	int hb2;
 } node;
 
 #endif

@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <math.h>
 
+#include "avl.h"
+
 node* create_node() {
 	node *new_node = (node*)malloc(sizeof(node));
 	if(new_node == NULL) {
@@ -44,7 +46,6 @@ node *add_value(node* tree, int value) {
 			continue;
 		}
 	}
-
 	//Calculate generic height balance information
 	/*node *current_node = new_node;
 	node *parent_node = find_parent(tree, new_node);
@@ -70,7 +71,8 @@ node *add_value(node* tree, int value) {
 		current_node = parent_node;
 		parent_node = find_parent(tree, parent_node);
 	}*/
-	update_heights(tree);
+	//update_heights(tree);
+	update_height_balance(tree);
 
 	return tree;
 }
@@ -161,7 +163,7 @@ node* find_value(node *tree, int value) {
 void inorder_traversal(node *tree) {
 	if(tree == NULL) return;
 	inorder_traversal(tree->left);
-	printf("%d(%d) ", tree->value, tree->hb);
+	printf("%d(%d, %d) ", tree->value, tree->hb, tree->hb2);
 	inorder_traversal(tree->right);
 }
 
@@ -215,4 +217,23 @@ int update_heights(node *tree) {
 
 	tree->hb = max;
 	return max;
+}
+
+void update_height_balance(node *tree) {
+	if(tree == NULL) return;
+	
+	int left_subtree_height = find_height(tree->left);
+	int right_subtree_height = find_height(tree->right);
+	int disbalance = right_subtree_height - left_subtree_height;
+	tree->hb2 = disbalance;
+
+	update_height_balance(tree->left);
+	update_height_balance(tree->right);
+}
+
+int find_height(node *n) {
+	if(n == NULL) return -1;
+	int left_subtree_height = find_height(n->left);
+	int right_subtree_height = find_height(n->right);
+	return 1 + (left_subtree_height > right_subtree_height ? left_subtree_height : right_subtree_height);
 }

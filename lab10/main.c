@@ -52,11 +52,11 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	node *a = find_value(tree, 2);
+	/*node *a = find_value(tree, 2);
 	node *b = find_value(tree, 1);
 
 	tree = rotate(tree, a, b);
-	inorder_traversal(tree);
+	inorder_traversal(tree);*/
 
 	/*node *x = find_value(tree, 21);
 	node *y = find_value(tree, 22);

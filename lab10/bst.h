@@ -12,5 +12,7 @@ node* find_min(node*);
 node* find_successor(node*, node*);
 void inorder_traversal(node*);
 int update_heights(node*);
+int find_height(node*);
+void update_height_balance(node*);
 
 #endif
