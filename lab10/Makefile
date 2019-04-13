@@ -1,4 +1,4 @@
-SRC = main.c bst.c stats.c
+SRC = main.c bst.c stats.c avl.c
 OBJ = $(SRC:.c=.o)
 EXE = a.out
 

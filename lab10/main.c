@@ -3,6 +3,7 @@
 
 #include "structures.h"
 #include "bst.h"
+#include "avl.h"
 #include "stats.h"
 
 
@@ -51,7 +52,13 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	node *x = find_value(tree, 21);
+	node *a = find_value(tree, 2);
+	node *b = find_value(tree, 1);
+
+	tree = rotate(tree, a, b);
+	inorder_traversal(tree);
+
+	/*node *x = find_value(tree, 21);
 	node *y = find_value(tree, 22);
 	node *z = find_value(tree, 2);
 	node *w = find_value(tree, 16);
@@ -76,7 +83,7 @@ int main() {
 	
 	tree = delete_value(tree, z);
 	inorder_traversal(tree);
-	printf("\n");
+	printf("\n");*/
 
 
 	/*inorder_traversal(tree);
