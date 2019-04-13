@@ -11,6 +11,7 @@ int find_kth_value(node* tree, int k) {
 	int x = find_kth_value(tree->left, k);
 	if(x + 1) return x;
 	++rank;	
+	printf("%d(%d) ", tree->value, rank);
 	if(rank == k) return tree->value;
 	x = find_kth_value(tree->right, k);
 	if(x + 1) return x;

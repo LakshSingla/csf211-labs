@@ -15,6 +15,7 @@ node* create_node() {
 }
 
 node *add_value(node* tree, int value) {
+	printf("%d\t", value);
 	node *new_node = create_node();	
 	new_node->value = value;
 	new_node->left = NULL;
@@ -45,7 +46,7 @@ node *add_value(node* tree, int value) {
 	}
 
 	//Calculate generic height balance information
-	node *current_node = new_node;
+	/*node *current_node = new_node;
 	node *parent_node = find_parent(tree, new_node);
 	bool prev_changed = true;
 	while(parent_node != NULL && prev_changed) {
@@ -68,18 +69,19 @@ node *add_value(node* tree, int value) {
 		}
 		current_node = parent_node;
 		parent_node = find_parent(tree, parent_node);
-	}
+	}*/
+	update_heights(tree);
+
 	return tree;
 }
 
 node *delete_value(node *tree, node *to_delete) {
+	node *ret_val;
 	printf("%d\t", to_delete->value);
-
 	node *parent = find_parent(tree, to_delete);
 	
 	//No children of the node
 	if(to_delete->left == NULL && to_delete->right == NULL) {
-		bool was_left;
 		if(parent == NULL) {
 			free(to_delete);	
 			return NULL;
@@ -87,16 +89,15 @@ node *delete_value(node *tree, node *to_delete) {
 
 		if(parent->right == to_delete) {
 			parent->right = NULL;
-			was_left = false;
 		}
 		else {
 			parent->left = NULL;
-			was_left = true;
 		}
 		free(to_delete);
+		ret_val = tree;
 
 		//Height balance information change
-		bool prev_changed = true;
+		/*bool prev_changed = true;
 		while(prev_changed && parent != NULL) {
 			prev_changed = false;
 			if(was_left && parent->hb < 0) {
@@ -110,12 +111,11 @@ node *delete_value(node *tree, node *to_delete) {
 			node *temp = parent;
 			parent = find_parent(tree, parent);
 			parent && (was_left = (parent->left == temp));
-		}
-		return tree;
+		}*/
 	}
 
 	//Single child of the node, right child present
-	if(to_delete->left == NULL && to_delete->right != NULL) {
+	else if(to_delete->left == NULL && to_delete->right != NULL) {
 		if(parent == NULL) {
 			node *new_tree_root = to_delete->right;
 			free(to_delete);		
@@ -124,11 +124,11 @@ node *delete_value(node *tree, node *to_delete) {
 		if(parent->left == to_delete) parent->left = to_delete->right;
 		else parent->right = to_delete->right;
 		free(to_delete);
-		return tree;
+		ret_val = tree;
 	}
 
 	//Single child of the node, left child present
-	if(to_delete->left != NULL && to_delete->right == NULL) {
+	else if(to_delete->left != NULL && to_delete->right == NULL) {
 		if(parent == NULL) {
 			node *new_tree_root = to_delete->left;
 			free(to_delete);		
@@ -137,12 +137,18 @@ node *delete_value(node *tree, node *to_delete) {
 		if(parent->left == to_delete) parent->left = to_delete->left;
 		else parent->right = to_delete->left;
 		free(to_delete);
-		return tree;
+		ret_val = tree;
 	}
 
-	node* succ_node = find_successor(tree, to_delete);
-	to_delete->value = succ_node->value;
-	return delete_value(tree, succ_node);
+	else {
+		node* succ_node = find_successor(tree, to_delete);
+		to_delete->value = succ_node->value;
+		ret_val = delete_value(tree, succ_node);
+	}
+
+	//printf("Update heights being called...\n");
+	update_heights(tree);
+	return ret_val;
 }
 
 node* find_value(node *tree, int value) {
@@ -195,4 +201,18 @@ node* find_successor(node* tree, node *n) {
 		parent_ansc = find_parent(tree, parent_ansc);
 	}
 	return parent_ansc;
+}
+
+int update_heights(node *tree) {
+	if(tree == NULL) return -1;
+	
+	int left_subtree_height = 1 + update_heights(tree->left);
+	int right_subtree_height = 1 + update_heights(tree->right);
+	int max = left_subtree_height;
+
+	if(right_subtree_height > left_subtree_height) 
+		max = right_subtree_height;
+
+	tree->hb = max;
+	return max;
 }

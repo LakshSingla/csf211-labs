@@ -11,5 +11,6 @@ node* find_parent(node*, node*);
 node* find_min(node*);
 node* find_successor(node*, node*);
 void inorder_traversal(node*);
+int update_heights(node*);
 
 #endif
