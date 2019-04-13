@@ -74,7 +74,47 @@ node *add_value(node* tree, int value) {
 	//update_heights(tree);
 	update_height_balance(tree);
 
-	return tree;
+	node *trailing = new_node;
+	node *trailing1 = find_parent(tree, trailing);
+	node *trailing2 = find_parent(tree, trailing1);
+	node *new_tree = tree;
+	//printf("%p\t%p\t%p\t%p\n", trailing, trailing1, trailing2, new_tree);
+
+	while(trailing2) {
+		node *temp1 = trailing1;
+		node *temp2 = trailing2;
+		node *temp3 = find_parent(tree, temp2);
+		if(abs(trailing2->hb2) > 1) {
+			if(trailing2->left == trailing1) {
+				if(trailing1->left == trailing) {
+					//printf("L->L");
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+				else {
+					//printf("L->R");
+					new_tree = rotate(new_tree, trailing1, trailing);
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+			}	
+
+			if(trailing2->right == trailing1) {
+				if(trailing1->left == trailing) {
+					//printf("R->L");
+					new_tree = rotate(new_tree, trailing1, trailing);
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+				else {
+					//printf("R->R");
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+			}	
+		}
+		trailing = temp1;
+		trailing1 = temp2;
+		trailing2 = temp3;
+	}
+	update_height_balance(new_tree);
+	return new_tree;
 }
 
 node *delete_value(node *tree, node *to_delete) {

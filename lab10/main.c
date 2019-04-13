@@ -12,43 +12,43 @@ int main() {
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 2);
+	tree = add_value(tree, 2);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 10);
+	tree = add_value(tree, 10);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 7);
+	tree = add_value(tree, 7);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 12);
+	tree = add_value(tree, 12);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 1);
+	tree = add_value(tree, 1);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 3);
+	tree = add_value(tree, 3);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 16);
+	tree = add_value(tree, 16);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 15);
+	tree = add_value(tree, 15);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 21);
+	tree = add_value(tree, 21);
 	inorder_traversal(tree);
 	printf("\n");
 
-	add_value(tree, 22);
+	tree = add_value(tree, 22);
 	inorder_traversal(tree);
 	printf("\n");
 
