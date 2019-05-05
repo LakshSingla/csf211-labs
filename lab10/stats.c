@@ -18,6 +18,13 @@ int find_kth_value(node* tree, int k) {
 	return -1;
 }
 
+node *find_kth_value_internal(node *tree, node *n, int rank) {
+	if(n) return n;
+
+	find_kth_value_internal(tree, n, rank);
+		
+}
+
 void find_in_range(node *tree, int r1, int r2) {
 	if(!tree) return;
 	if(tree->value > r2) return find_in_range(tree->left, r1, r2);
@@ -28,3 +35,5 @@ void find_in_range(node *tree, int r1, int r2) {
 		find_in_range(tree->right, tree->value, r2);
 	}
 }
+
+

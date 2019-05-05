@@ -14,5 +14,6 @@ void inorder_traversal(node*);
 int update_heights(node*);
 int find_height(node*);
 void update_height_balance(node*);
+void inorder_traversal_stack(node*);
 
 #endif

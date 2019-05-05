@@ -91,7 +91,7 @@ bool find_hostname(node *tree, char *hostname) {
 		while(tree && strcmp(tokens[i], tree->key) != 0)	tree = tree->right_sibling;
 		--i;
 	}
-	if(tree)
+	if(tree && tree->ip)
 		printf("%s\n", tree->ip);
 	else 
 		printf("Match not found\n");

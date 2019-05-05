@@ -118,9 +118,10 @@ node *add_value(node* tree, int value) {
 }
 
 node *delete_value(node *tree, node *to_delete) {
-	node *ret_val;
+	node *new_tree_root;
 	printf("%d\t", to_delete->value);
 	node *parent = find_parent(tree, to_delete);
+	bool left_deleted = false;
 	
 	//No children of the node
 	if(to_delete->left == NULL && to_delete->right == NULL) {
@@ -131,12 +132,14 @@ node *delete_value(node *tree, node *to_delete) {
 
 		if(parent->right == to_delete) {
 			parent->right = NULL;
+			left_deleted = false;
 		}
 		else {
 			parent->left = NULL;
+			left_deleted = true;
 		}
 		free(to_delete);
-		ret_val = tree;
+		new_tree_root = tree;
 
 		//Height balance information change
 		/*bool prev_changed = true;
@@ -159,38 +162,78 @@ node *delete_value(node *tree, node *to_delete) {
 	//Single child of the node, right child present
 	else if(to_delete->left == NULL && to_delete->right != NULL) {
 		if(parent == NULL) {
-			node *new_tree_root = to_delete->right;
-			free(to_delete);		
-			return new_tree_root;
+			new_tree_root = to_delete->right;
+			free(to_delete);	
 		}
 		if(parent->left == to_delete) parent->left = to_delete->right;
 		else parent->right = to_delete->right;
 		free(to_delete);
-		ret_val = tree;
+		new_tree_root = tree;
 	}
 
 	//Single child of the node, left child present
 	else if(to_delete->left != NULL && to_delete->right == NULL) {
 		if(parent == NULL) {
-			node *new_tree_root = to_delete->left;
+			new_tree_root = to_delete->left;
 			free(to_delete);		
-			return new_tree_root;
 		}
 		if(parent->left == to_delete) parent->left = to_delete->left;
 		else parent->right = to_delete->left;
 		free(to_delete);
-		ret_val = tree;
+		new_tree_root = tree;
 	}
 
 	else {
 		node* succ_node = find_successor(tree, to_delete);
 		to_delete->value = succ_node->value;
-		ret_val = delete_value(tree, succ_node);
+		new_tree_root = delete_value(tree, succ_node);
 	}
 
 	//printf("Update heights being called...\n");
-	update_heights(tree);
-	return ret_val;
+	//update_heights(tree);
+	update_height_balance(tree);
+
+	/*node *trailing = new_node;
+	node *trailing1 = find_parent(tree, trailing);
+	node *trailing2 = find_parent(tree, trailing1);
+	node *new_tree = tree;
+	//printf("%p\t%p\t%p\t%p\n", trailing, trailing1, trailing2, new_tree);
+
+	while(trailing2) {
+		node *temp1 = trailing1;
+		node *temp2 = trailing2;
+		node *temp3 = find_parent(tree, temp2);
+		if(abs(trailing2->hb2) > 1) {
+			if(trailing2->left == trailing1) {
+				if(trailing1->left == trailing) {
+					//printf("L->L");
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+				else {
+					//printf("L->R");
+					new_tree = rotate(new_tree, trailing1, trailing);
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+			}	
+
+			if(trailing2->right == trailing1) {
+				if(trailing1->left == trailing) {
+					//printf("R->L");
+					new_tree = rotate(new_tree, trailing1, trailing);
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+				else {
+					//printf("R->R");
+					new_tree = rotate(new_tree, trailing2, trailing1);
+				}
+			}	
+		}
+		trailing = temp1;
+		trailing1 = temp2;
+		trailing2 = temp3;
+	}*/
+	//update_height_balance(new_tree);
+	return new_tree_root;
 }
 
 node* find_value(node *tree, int value) {
@@ -205,6 +248,25 @@ void inorder_traversal(node *tree) {
 	inorder_traversal(tree->left);
 	printf("%d(%d, %d) ", tree->value, tree->hb, tree->hb2);
 	inorder_traversal(tree->right);
+}
+
+void inorder_traversal_stack(node *tree) {
+	node* stack[100] = {NULL};
+	int i = 0;							//i denotes the next position in stack where to insert the element
+	node *n = tree;
+	stack[i++] = n;
+	n = n->left;
+	while(i > 0 || n) {
+		if(n) {
+			stack[i++] = n;
+			n = n->left;
+		}
+		else {
+			node *x = stack[--i];	
+			printf("%d\t", x->value);
+			n = x->right;
+		}
+	}
 }
 
 node* find_parent(node *tree, node *child) {
